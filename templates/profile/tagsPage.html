@@ -1,304 +1,349 @@
-{% extends 'profile/base.html' %}
+{% extends 'profile/base.html' %} {# This line was in your provided code, keeping it #}
 {% load qa_tags %}
-
-{% block content %}
-
-
-<!DOCTYPE html>
+{% load static %} {# Added missing load static tag if needed by base.html #}
+{% load humanize %} {# Added missing load humanize tag if needed #}
 
 
-    <html class="html__responsive ">
+{% block css %} {# Start CSS Block for styles specific to this page #}
 
-    <head>
-
-        <title>Tags - Stack Overflow</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script async src="https://cdn.sstatic.net/Js/third-party/stacks/stacks.min.js?v=4c00f8ce1b14"></script>
-    <script src="https://cdn.sstatic.net/Js/stub.en.js?v=02d19f44eb4e"></script>
-    
-    <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Shared/stacks.css?v=556e4333f24c">
-    <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Sites/stackoverflow/primary.css?v=34c234f84be8">
-
-        <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Sites/stackoverflow/secondary.css?v=bbf1061b903d">
-
-    
-<meta name="robots" content="noindex">
-
-        
-        
-        
-        <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Shared/Channels/channels.css?v=47a5e0f03c81">
-        
-
-    </head>
-    <body class="tags-page unified-theme">
-    <div id="notify-container"></div>
-    <div id="custom-header"></div>
+{# Basic Stacks CSS needed for layout components #}
+<link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Shared/stacks.css?v=556e4333f24c">
+<link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Sites/stackoverflow/primary.css?v=34c234f84be8">
+<link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Sites/stackoverflow/secondary.css?v=bbf1061b903d">
+<link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Shared/Channels/channels.css?v=47a5e0f03c81">
 
 
-    <div class="container">
+<style>
+    /* --- Base Variables and Body Style (Consistent) --- */
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f1f5f9; /* Consistent background */
+      --border: #e2e8f0;
+      --hover: #f1f5f9; /* Use light gray for hover */
+    }
+
+    /* --- Styles Specific to the Content Block --- */
+    .tags-page-container { /* Use a wrapper for page content if base.html doesn't provide one */
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex; /* Key for sidebar layout */
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* --- Left Sidebar Styles (Consistent) --- */
+    #left-sidebar {
+      background: var(--bg-primary) !important; border-radius: 0; padding: 0; border: none;
+      border-right: 1px solid var(--border); flex-shrink: 0; width: 200px; /* Adjust width */
+      height: calc(100vh - 50px); /* Fill height below header */
+      position: sticky !important; top: 50px !important; /* Position below header */
+    }
+    #left-sidebar .nav-links--link, #left-sidebar .pl8 {
+        display: flex !important; align-items: center !important; padding: 14px 20px !important;
+        border-radius: 0 !important; border-left: 3px solid transparent !important;
+        color: var(--text-secondary) !important; text-decoration: none !important;
+        font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s !important;
+        margin: 0 !important; gap: 12px !important;
+    }
+     #left-sidebar .nav-links--link:hover, #left-sidebar .pl8:hover {
+        background: var(--hover) !important; color: var(--text-primary) !important;
+        border-left-color: var(--primary) !important;
+    }
+    #left-sidebar .youarehere > a { /* Active link style */
+        background: #eef2ff !important; color: var(--primary) !important;
+        border-left-color: var(--primary) !important; font-weight: 600 !important;
+    }
+     #left-sidebar .youarehere svg { /* Active icon */
+        opacity: 1 !important; color: var(--primary) !important; fill: var(--primary) !important; /* Fill for Stacks icons */
+    }
+     #left-sidebar svg.svg-icon { /* Stacks icons */
+        width: 18px !important; height: 18px !important; opacity: 0.6 !important;
+        flex-shrink: 0 !important; fill: currentColor;
+     }
+     #left-sidebar .fs-fine { /* "Public" label */
+        font-size: 11px !important; font-weight: 700 !important; text-transform: uppercase !important;
+        letter-spacing: 1px !important; padding: 28px 20px 12px 20px !important;
+        color: var(--text-secondary) !important; opacity: 0.5 !important; margin: 0 !important;
+    }
+    #left-sidebar .left-sidebar--sticky-container { position: sticky; top: 70px; /* Adjust if header height differs */ }
 
 
+    /* --- Main Content Area --- */
+    #content { flex-grow: 1; display: flex; min-width: 0; background-color: var(--bg-secondary); }
+    #mainbar-full { padding: 24px; flex-grow: 1; min-width: 0; }
+    .fs-headline1 { font-size: 32px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+    .fs-body2 { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
 
-<div id="left-sidebar" data-is-here-when="md lg" class="left-sidebar js-pinned-left-sidebar ps-relative">
-    <div class="left-sidebar--sticky-container js-sticky-leftnav">
-        <nav role="navigation">
-            <ol class="nav-links">
-        <li class="">
-            <a
-               href="/"
-               class="pl8 nav-links--link"
-               aria-controls="" data-controller="" data-s-popover-placement="right"
-               data-s-popover-auto-show="true" data-s-popover-hide-on-outside-click="never">
-                    <div class="d-flex ai-center">
-                        <div class="flex--item truncate">
-                            Home
-                        </div>
-                    </div>
-            </a>
-        </li>
-                <li>
-                    <ol class="nav-links">
+    /* --- Search Input --- */
+    .s-input__search {
+        border-radius: 6px !important; border: 1px solid var(--border) !important;
+        font-size: 14px !important; padding-left: 32px !important; /* Space for icon */
+        height: auto !important; /* Override h100 if causing issues */ padding-top: 8px; padding-bottom: 8px;
+    }
+    .s-input__search:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important; }
+    .s-input-icon__search { fill: var(--text-secondary); height: 18px; width: 18px; top: 50%; transform: translateY(-50%); }
+
+    /* --- Filter Button Group (Popular, Name, New) --- */
+    .s-btn-group { gap: 0px !important; border-radius: 8px; overflow: hidden; display: inline-flex; }
+    .s-btn-group .s-btn__muted {
+        border: 1px solid var(--border) !important; background: white !important;
+        color: var(--text-secondary) !important; padding: 6px 14px !important; /* Adjusted size */
+        font-size: 14px !important; font-weight: 500 !important;
+        transition: all 0.2s !important; margin: 0 !important; border-radius: 0 !important;
+    }
+    .s-btn-group .s-btn__muted:hover { border-color: var(--primary) !important; color: var(--primary) !important; }
+    .s-btn-group .is-selected { background: var(--primary) !important; color: white !important; border-color: var(--primary) !important; z-index: 2; }
+    .s-btn-group > .s-btn__muted:first-child { border-top-left-radius: 8px !important; border-bottom-left-radius: 8px !important; }
+    .s-btn-group > .s-btn__muted:last-child { border-top-right-radius: 8px !important; border-bottom-right-radius: 8px !important; }
+    .s-btn-group > .s-btn__muted:not(:first-child) { border-left-width: 0 !important; }
+
+    /* --- Tag Card Styles --- */
+    .s-card.js-tag-cell {
+        background: var(--bg-primary) !important; border: 1px solid var(--border) !important;
+        border-radius: 12px !important; padding: 16px !important;
+        margin-bottom: 0 !important; transition: all 0.2s ease-out !important;
+        display: flex !important; flex-direction: column !important; height: 100%; /* Make cards fill grid height */
+    }
+    .s-card.js-tag-cell:hover {
+        border-color: var(--primary) !important; box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
+        transform: translateY(-3px);
+    }
+     .s-card .post-tag { /* Tag link inside card */
+        background: #eef2ff !important; color: #4338ca !important;
+        border: 1px solid #c7d2fe !important; padding: 4px 10px !important;
+        border-radius: 6px !important; font-size: 13px !important;
+        font-weight: 500 !important; transition: all 0.2s !important;
+        text-decoration: none !important; display: inline-block;
+    }
+     .s-card .post-tag:hover {
+        background: var(--primary) !important; color: white !important; border-color: var(--primary) !important;
+    }
+     .s-card .fc-medium { /* Description text */
+        color: var(--text-secondary); font-size: 14px; line-height: 1.5;
+        overflow: hidden; /* Keep truncation */
+     }
+    /* Bottom info (question count) */
+     .s-card .fs-caption { font-size: 13px; color: var(--text-secondary); }
+     .s-card .s-anchors a { color: var(--primary) !important; text-decoration: none; } /* Style links if present */
+     .s-card .s-anchors a:hover { text-decoration: underline; }
+
+     /* Grid layout for tags */
+     #tags-browser.d-grid {
+         grid-template-columns: repeat(4, 1fr); /* Default 4 columns */
+     }
+     @media (max-width: 1200px) { /* lg breakpoint approx */
+         #tags-browser.d-grid { grid-template-columns: repeat(3, 1fr); }
+     }
+     @media (max-width: 980px) { /* md breakpoint approx */
+         #tags-browser.d-grid { grid-template-columns: repeat(2, 1fr); }
+     }
+      @media (max-width: 640px) { /* sm breakpoint approx */
+         #tags-browser.d-grid { grid-template-columns: repeat(1, 1fr); }
+     }
+
+
+    /* --- Footer Style (If needed, assuming base.html provides it) --- */
+    /* If base.html includes the footer, these are not needed here */
+    /*
+    #footer.site-footer { ... }
+    .site-footer--container { ... }
+    */
+
+</style>
+{% endblock css %}
+
+
+{% block content %} {# Start the main content block #}
+
+<div class="tags-page-container"> {# Wrapper for content if needed #}
+
+    {# --- Left Sidebar --- #}
+    <div id="left-sidebar" data-is-here-when="md lg" class="left-sidebar js-pinned-left-sidebar ps-relative">
+        <div class="left-sidebar--sticky-container js-sticky-leftnav">
+            <nav role="navigation">
+                <ol class="nav-links">
+                    <li>
+                        <a href="{% url 'profile:home' %}" class="nav-links--link"> {# Use consistent class #}
+                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <ol class="nav-links">
                             <li class="fs-fine tt-uppercase ml8 mt16 mb4 fc-light">Public</li>
-
-        <li class="">
-            <a id="nav-questions"
-               href="/questions"
-               class="pl8 nav-links--link -link__with-icon"
-               aria-controls="" data-controller="" data-s-popover-placement="right"
-               data-s-popover-auto-show="true" data-s-popover-hide-on-outside-click="never">
-<svg aria-hidden="true" class="svg-icon iconGlobe" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1C4.64 1 1 4.64 1 9c0 4.36 3.64 8 8 8 4.36 0 8-3.64 8-8 0-4.36-3.64-8-8-8ZM8 15.32a6.46 6.46 0 01-4.3-2.74 6.46 6.46 0 01-.93-5.01L7 11.68v.8c0 .88.12 1.32 1 1.32v1.52Zm5.72-2c-.2-.66-1-1.32-1.72-1.32h-1v-2c0-.44-.56-1-1-1H6V7h1c.44 0 1-.56 1-1V5h2c.88 0 1.4-.72 1.4-1.6v-.33a6.45 6.45 0 013.83 4.51 6.45 6.45 0 01-1.51 5.73v.01Z"/></svg>                    <span class="-link--channel-name">Questions</span>
-            </a>
-        </li>
-
-
-
-        <li class="youarehere">
-            <a id="nav-tags"
-               href="/tagsPage"
-               class=" nav-links--link" 
-               aria-controls="" data-controller="" data-s-popover-placement="right"
-               data-s-popover-auto-show="true" data-s-popover-hide-on-outside-click="never">
-                    <div class="d-flex ai-center">
-                        <div class="flex--item truncate">
-                            Tags
-                        </div>
-                    </div>
-            </a>
-        </li>
-        <li class="">
-            <a id="nav-users"
-               href="/usersPage"
-               class="nav-links--link"
-               aria-controls="" data-controller="" data-s-popover-placement="right"
-               data-s-popover-auto-show="true" data-s-popover-hide-on-outside-click="never">
-                    <div class="d-flex ai-center">
-                        <div class="flex--item truncate">
-                            Users
-                        </div>
-                    </div>
-            </a>
-        </li>
-                    </ol>
-                </li>
-            </ol>
-        </nav>
-    </div>
-
-
-</div>
-
-
-
-        <div id="content" class="snippet-hidden">
-
-
-<div id="mainbar-full">
-        <h1 class="fs-headline1 mb16">
-            Tags
-        </h1>
-
-    <p class="fs-body2 wmx6 mb16">
-        A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.
-    </p>
-
-
-    <div class="d-flex fw-wrap">
-        <div class="flex--item ps-relative mb12">
-            <input name="w" id="id_search_user"  class="s-input s-input__search h100" autocomplete="off" type="text" maxlength="35" placeholder="Filter by tag name" autofocus>
-            <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="m18 16.5-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5ZM12 7A5 5 0 112 7a5 5 0 0110 0Z"/></svg>
-        </div>
-
-        <div class="flex--item ml-auto mb12 d-flex s-btn-group js-filter-btn">
-        <a class="youarehere is-selected flex--item s-btn s-btn__muted s-btn__outlined" href="/tags?tab=popular" data-nav-xhref="" title="most popular tags" data-value="popular" data-shortcut="">
-            Popular</a>
-        <a class="flex--item s-btn s-btn__muted s-btn__outlined" href="/tags?tab=name" data-nav-xhref="" title="tags in alphabetical order" data-value="name" data-shortcut="">
-            Name</a>
-        <a class="flex--item s-btn s-btn__muted s-btn__outlined" href="/tags?tab=new" data-nav-xhref="" title="recently created tags" data-value="new" data-shortcut="">
-            New</a>
-</div>
-
-    </div>
-
-
-
-    <div id="tags_list">
-        <div id="tags-browser" class="d-grid grid__4 lg:grid__3 md:grid__2 sm:grid__1 g12 loopedTags">
-        {% for tag in All_tags %}
-            <div class="s-card js-tag-cell d-flex fd-column mySearchedTags">
-                <div class="d-flex jc-space-between ai-center mb12">
-                    <div class="flex--item">
-                        <a href="{% url 'tagbadge:taggedItemsFrom_All' tag.id %}" class="post-tag" title="show questions tagged 'p'" rel="tag">{{tag}}</a>
-                    </div>
-                </div>
-
-                    <div class="flex--item fc-medium mb12 v-truncate4">
-                        P is a language for asynchronous event-driven programming written by Microsoft. Questions should include code examples sufficient to reproduce the problem.
-                    </div>
-
-                <div class="mt-auto d-flex jc-space-between fs-caption fc-black-400">
-                        <div class="flex--item">{{tag|count_questions_by_tag_without_user}} question{{tag|count_questions_by_tag_without_user|pluralize}}</div>
-                    <div class="flex--item s-anchors s-anchors__inherit">  </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-
-
-
-    <script>
-
-            var token = '{{csrf_token}}';
-            $('#id_search_user').on('input', function (e) {
-                $('#tags_list').html(`<div class="spinner-border text-warning" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                        </div>`)
-                $.ajax({
-                    headers: { "X-CSRFToken": token },
-                    url: "{% url 'profile:Ajax_searchTag' %}",
-                    data: {
-                        'w': $('#id_search_user').val(),
-                    },
-                    method: 'get',
-                    dataType: 'json',
-                    success: function (response) {
-                            $("#tags_list > *").remove();
-                        for (result of response.results) { 
-                            $('#tags_list').prepend(`<div id="tags-browser" class="d-grid grid__4 lg:grid__3 md:grid__2 sm:grid__1 g12 myS">
-${response.results.map(({tag_name}) => `<div class="s-card js-tag-cell d-flex fd-column">
-                <div class="d-flex jc-space-between ai-center mb12">
-                    <div class="flex--item">
-                        <a href="/getQuestions/${result.id}/" class="post-tag" title="" rel="tag">${tag_name}</a>
-                    </div>
-                </div>
-
-                    <div class="flex--item fc-medium mb12 v-truncate4">
-                        For questions regarding programming in ECMAScript (JavaScript/JS) and its various dialects/implementations (excluding ActionScript). Please include all relevant tags on your question; e.g., [node.js],…
-                    </div>
-
-                <div class="mt-auto d-flex jc-space-between fs-caption fc-black-400">
-                        <div class="flex--item">2294252 questions</div>
-                    <div class="flex--item s-anchors s-anchors__inherit"> <a href="/questions/tagged/javascript?sort=newest&amp;days=1" title="740 questions tagged javascript in the last 24 hours">740 asked today</a>, <a href="/questions/tagged/javascript?sort=newest&amp;days=7" title="4253 questions tagged javascript in the last 7 days">4253 this week</a> </div>
-                </div>
-            </div>`).join("")} </div>`)
-                            
-                        }
-
-                    },
-                    error: function(xhr, status, error){
-                        //Handle failure here
-                        // Want to Test? Stop the server and try to load the post's div.
-                    $(`.ajax-failed-to-fetch-error`).html(`<div style="padding: .5em; background-color: red; color:white;">Something Went Wrong while Loading the Div, Try to reload or Check your Internet Connection</div>`)
-                    }
-                })
-
-            })
-</script>
-
-
-
-<div class="ajax-failed-to-fetch-error"></div>
-
-
-
-</div>
-        </div>
-    </div>
-
-
-
-
-            <footer id="footer" class="site-footer js-footer" role="contentinfo">
-        <div class="site-footer--container">
-                <div class="site-footer--logo">
-                    <i class="fab fa-stack-overflow fa-3x"></i>
-                </div>
-            <nav class="site-footer--nav">
-                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
-                        <h5 class="-title"><a href="" class="" >Stack Overflow - Clone</a></h5>
-                        <ul class="-list js-primary-footer-links">
-                            <li class="-item"><a href="/questions" class=" -link" data-gps-track="footer.click({ location: 4, link: 16})">Questions</a></li>
-                                <li class="-item"><a href="" class=" -link" >Jobs</a></li>
-                                <li class="-item"><a href="" class=" -link" >Developer Jobs Directory</a></li>
-                                     <li class="-item"><a href="" class=" -link" >Salary Calculator</a></li>
-                                <li class="-item"><a href="" class=" -link" >Help</a></li>
-                                <li class="-item"><a onclick='StackExchange.switchMobile("on")' class=" -link" >Mobile</a></li>
-                        </ul>
-                    </div>
-                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
-                        <h5 class="-title"><a href="">Products</a></h5>
-                        <ul class="-list">
-                            <li class="-item"><a href="" class=" -link" 
-                                                 
-                                                >Teams</a></li>
-                            <li class="-item"><a href="" class=" -link" >Talent</a></li>
-                            <li class="-item"><a href="" class=" -link" >Advertising</a></li>
-                            <li class="-item"><a href="" class=" -link">Enterprise</a></li>
-                        </ul>
-                    </div>
-                <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
-                    <h5 class="-title"><a href="">Company</a></h5>
-                    <ul class="-list">
-                            <li class="-item"><a class=" -link" href="">About</a></li>
-                        <li class="-item"><a class=" -link" href="">Press</a></li>
-                            <li class="-item"><a class=" -link" href="">Work Here</a></li>
-                        <li class="-item"><a class=" -link" href="">Legal</a></li>
-                        <li class="-item"><a class=" -link" href="">Privacy Policy</a></li>
-                        <li class="-item"><a class="-link" href="">Terms of Service</a></li>
-                            <li class="-item"><a class=" -link"  href="">Contact Us</a></li>
-                            <li class="-item" id="consent-footer-link"><a class="-link js-cookie-settings" href="#" data-consent-popup-loader="footer">Cookie Settings</a></li>
-                        <li class="-item"><a class=" -link"  href="">Cookie Policy</a></li>
-                    </ul>
-                </div>
+                            <li>
+                                <a id="nav-questions" href="{% url 'qa:questions' %}" class="nav-links--link"> {# Use consistent class #}
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                                    <span>Discussions</span> {# Consistent Naming #}
+                                </a>
+                            </li>
+                            <li class="youarehere"> {# Mark Tags as active #}
+                                <a id="nav-tags" href="{% url 'profile:tagsPage' %}" class="nav-links--link">
+                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"> <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path> <line x1="7" y1="7" x2="7.01" y2="7"></line> </svg>
+                                    <span>Topics</span> {# Consistent Naming #}
+                                </a>
+                            </li>
+                            <li>
+                                <a id="nav-users" href="{% url 'profile:usersPage' %}" class="nav-links--link">
+                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"> <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path> </svg>
+                                    <span>Students</span> {# Consistent Naming #}
+                                </a>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
             </nav>
-            <div class="site-footer--copyright fs-fine">
-                <ul class="-list">
-                    <li class="-item"><a class="-link" href="">Blog</a></li>
-                    <li class="-item"><a href="" class="-link" >Facebook</a></li>
-                    <li class="-item"><a href="" class="-link" >Twitter</a></li>
-                    <li class="-item"><a href="" class="-link" >LinkedIn</a></li>
-                    <li class="-item"><a href="" class="-link">Instagram</a></li>
-                </ul>
-
-                <p class="mt-auto mb24">
-site design / logo &#169; 2021 Stack Exchange Inc; user contributions licensed under <a href="https://stackoverflow.com/help/licensing">cc by-sa</a>.                    <span id="svnrev">rev&nbsp;2021.11.12.40742</span>
-                </p>
-            </div>
         </div>
+    </div>
 
-    </footer>
-        
-    <div id="onetrust-consent-sdk" class="d-none"></div>
-    <div id="onetrust-banner-sdk" data-controller="s-modal"></div>
-    <div id="ot-pc-content" class="d-none"></div>
-    <div id="onetrust-style" class="d-none">&nbsp;</div>
-    <div class="d-none js-consent-banner-version" data-consent-banner-version="baseline"></div>
+    {# --- Main Content --- #}
+    <div id="content" class="snippet-hidden">
+        <div id="mainbar-full">
+            <h1 class="fs-headline1 mb16">
+                Tags
+            </h1>
+            <p class="fs-body2 wmx6 mb16">
+                A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.
+            </p>
 
-    
-    </body>
-    </html>
+            <div class="d-flex flex-wrap jc-space-between ai-center mb16"> {# Use flex-wrap and space-between #}
+                <div class="flex--item ps-relative mb12 mr16"> {# Add margin-right #}
+                    <input name="w" id="id_search_user" class="s-input s-input__search" autocomplete="off" type="text" maxlength="35" placeholder="Filter by tag name" autofocus>
+                    <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="m18 16.5-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5ZM12 7A5 5 0 112 7a5 5 0 0110 0Z"/></svg>
+                </div>
+                <div class="flex--item mb12 d-flex s-btn-group js-filter-btn">
+                    {# Assuming 'tab' is passed in context to determine active state #}
+                    <a class="{% if tab == 'popular' or not tab %}is-selected{% endif %} flex--item s-btn s-btn__muted s-btn__outlined" href="{% url 'profile:tagsPage' %}?tab=popular" title="most popular tags">Popular</a>
+                    <a class="{% if tab == 'name' %}is-selected{% endif %} flex--item s-btn s-btn__muted s-btn__outlined" href="{% url 'profile:tagsPage' %}?tab=name" title="tags in alphabetical order">Name</a>
+                    <a class="{% if tab == 'new' %}is-selected{% endif %} flex--item s-btn s-btn__muted s-btn__outlined" href="{% url 'profile:tagsPage' %}?tab=new" title="recently created tags">New</a>
+                </div>
+            </div>
+
+            <div id="tags_list">
+                <div id="tags-browser" class="d-grid g12 loopedTags"> {# Removed grid__* classes, handled by CSS media queries #}
+                    {% for tag in All_tags %}
+                        <div class="s-card js-tag-cell d-flex fd-column mySearchedTags">
+                            <div class="d-flex jc-space-between ai-center mb12">
+                                <div class="flex--item">
+                                    <a href="{% url 'tagbadge:taggedItemsFrom_All' tag.id %}" class="post-tag" title="show questions tagged '{{ tag.name }}'" rel="tag">{{ tag.name }}</a>
+                                </div>
+                                {# Add follow button or other actions here if needed #}
+                            </div>
+                            <div class="flex--item fc-medium mb12 v-truncate4">
+                                {# Placeholder description - replace with actual tag description if available #}
+                                This is a placeholder description for the tag. Add relevant details here.
+                            </div>
+                            <div class="mt-auto d-flex jc-space-between fs-caption fc-black-400">
+                                <div class="flex--item">{{ tag|count_questions_by_tag_without_user }} question{{ tag|count_questions_by_tag_without_user|pluralize }}</div>
+                                {# Add 'asked today/this week' info if available #}
+                                <div class="flex--item s-anchors s-anchors__inherit"></div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="p16">No tags found.</p> {# Message if no tags exist #}
+                    {% endfor %}
+                </div>
+            </div>
+
+             {# Pagination (Add if your view supports pagination) #}
+            {% if All_tags.has_other_pages %}
+            <div class="s-pagination site1 themed pager float-left mt24">
+                 {% if All_tags.has_previous %}
+                    <a class="s-pagination--item js-pagination-item" href="?page={{ All_tags.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" title="Go to previous page"> Prev </a>
+                {% endif %}
+                {% for i in All_tags.paginator.page_range %}
+                    {% if All_tags.number == i %}
+                        <span class="s-pagination--item is-selected">{{ i }}</span>
+                    {% elif i > All_tags.number|add:'-3' and i < All_tags.number|add:'3' %} {# Show nearby pages #}
+                        <a class="s-pagination--item js-pagination-item" href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" title="Go to page {{ i }}">{{ i }}</a>
+                    {% elif i == All_tags.number|add:'-3' or i == All_tags.number|add:'3' %} {# Ellipsis #}
+                         <span class="s-pagination--item s-pagination--item__clear">...</span>
+                    {% endif %}
+                {% endfor %}
+                 {% if All_tags.has_next %}
+                    <a class="s-pagination--item js-pagination-item" href="?page={{ All_tags.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" title="Go to next page"> Next </a>
+                {% endif %}
+            </div>
+            {% endif %}
 
 
+            <div class="ajax-failed-to-fetch-error"></div> {# For your AJAX search errors #}
+        </div>
+    </div>{# End #content #}
 
-{% endblock content %}
+</div> {# End .tags-page-container #}
+
+{% endblock content %} {# End the main content block #}
+
+{% block js %} {# Start JS Block #}
+<script>
+    // Your existing AJAX search script
+    $(document).ready(function() { // Wrap in document ready
+        var token = '{{csrf_token}}';
+        $('#id_search_user').on('input', function (e) {
+            var searchTerm = $(this).val().toLowerCase(); // Get search term
+            var $tagsList = $('#tags_list'); // Cache selector
+
+            // --- Client-side filtering START ---
+            // If you prefer client-side filtering instead of AJAX:
+            $('#tags-browser .s-card.js-tag-cell').each(function() {
+                var tagName = $(this).find('.post-tag').text().toLowerCase();
+                if (tagName.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            // Comment out or remove the AJAX call below if using client-side filtering
+            // --- Client-side filtering END ---
+
+
+            // --- AJAX Call START (Keep this if you want server-side search) ---
+            $tagsList.html(`<div class="d-flex jc-center p16"><div class="spinner-border text-primary" role="status"><span class="v-visible-sr">Loading...</span></div></div>`); // Improved loader
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: "{% url 'profile:Ajax_searchTag' %}", // Make sure this URL is correct
+                data: { 'w': searchTerm }, // Use the captured search term
+                method: 'get',
+                dataType: 'json',
+                success: function (response) {
+                    $tagsList.empty(); // Clear previous results or loader
+                    if (response.results && response.results.length > 0) {
+                        var tagsHtml = response.results.map(result => `
+                            <div class="s-card js-tag-cell d-flex fd-column mySearchedTags">
+                                <div class="d-flex jc-space-between ai-center mb12">
+                                    <div class="flex--item">
+                                        <a href="/tag/${result.id}/questions/" class="post-tag" title="" rel="tag">${result.tag_name}</a> {# Use correct URL structure #}
+                                    </div>
+                                </div>
+                                <div class="flex--item fc-medium mb12 v-truncate4">
+                                     ${result.description || 'No description available.'} {# Display actual description #}
+                                </div>
+                                <div class="mt-auto d-flex jc-space-between fs-caption fc-black-400">
+                                    <div class="flex--item">${result.question_count || 0} question${result.question_count !== 1 ? 's' : ''}</div>
+                                    <div class="flex--item s-anchors s-anchors__inherit"></div>
+                                </div>
+                            </div>
+                        `).join("");
+                        // Append results wrapped in the grid container
+                        $tagsList.html(`<div id="tags-browser" class="d-grid g12 loopedTags">${tagsHtml}</div>`);
+                    } else {
+                        $tagsList.html('<p class="p16">No tags found matching your filter.</p>');
+                    }
+                },
+                error: function(xhr, status, error){
+                     $tagsList.empty(); // Clear loader on error
+                    $('.ajax-failed-to-fetch-error').html(`<div class="s-notice s-notice__danger p16 my16">Error loading tags. Please try again.</div>`);
+                }
+            });
+             // --- AJAX Call END ---
+
+        }); // End input event
+    }); // End document ready
+</script>
+{% endblock js %} {# End JS Block #}

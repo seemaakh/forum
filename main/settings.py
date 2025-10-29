@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-=dei9kx=^q))zm#z-(_cwdii75e-4bsf5_7suo9ll&besz088u
 # from django.conf import settings
 settings.configure()
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'help',
     'taggit',
     'crispy_forms',
+    'crispy_bootstrap4',
     'martor',
     'simple_history',
     # 'background_task',
