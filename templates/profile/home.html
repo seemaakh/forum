@@ -5,258 +5,169 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-
-<html class="html__responsive">
-
-<head>
-  <title>Campus Forum - Where Students Connect & Learn</title>
-  <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Shared/stacks.css?v=15473555f232">
-  <link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/Sites/stackoverflow/primary.css?v=de9fb8b74f61">
-  <style>
+<style>
     :root {
-      --primary: #6366f1;
-      --primary-light: #818cf8;
-      --primary-dark: #4f46e5;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --bg-primary: #ffffff;
-      /* --- MODIFIED: Darker background for contrast --- */
-      --bg-secondary: #f1f5f9;
-      --border: #e2e8f0;
-      --hover: #f1f5f9;
+        --primary: #6366f1;
+        --primary-light: #818cf8;
+        --primary-dark: #4f46e5;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --bg-primary: #ffffff;
+        --bg-secondary: #f1f5f9;
+        --border: #e2e8f0;
+        --hover: #f1f5f9;
     }
 
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     body {
-      background: var(--bg-secondary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-      color: var(--text-primary);
-      line-height: 1.6;
-      font-size: 15px;
+        background: var(--bg-secondary);
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+        font-size: 15px;
     }
 
     .container {
-      background: transparent;
-      box-shadow: none;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .left-sidebar {
-      background: var(--bg-primary);
-      border-radius: 0;
-      padding: 0;
-      border: none;
-      border-right: 1px solid var(--border);
-    }
-
-    .nav-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .nav-links li {
-      list-style: none;
-    }
-
-    .nav-links > li > ol {
-      padding: 0;
-      margin: 0;
-    }
-
-    .nav-links--link {
-      display: flex;
-      align-items: center;
-      padding: 14px 20px;
-      border-radius: 0;
-      border-left: 3px solid transparent;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      transition: all 0.2s;
-      margin: 0;
-      gap: 12px;
-    }
-
-    .nav-links--link:hover {
-      background: var(--hover);
-      color: var(--text-primary);
-      border-left-color: var(--primary);
-    }
-
-    .youarehere .nav-links--link {
-      background: #eef2ff;
-      color: var(--primary);
-      border-left-color: var(--primary);
-      font-weight: 600;
-    }
-
-    .nav-links--link svg {
-      width: 18px;
-      height: 18px;
-      opacity: 0.6;
-      flex-shrink: 0;
-      stroke-width: 2;
-    }
-
-    .youarehere .nav-links--link svg {
-      opacity: 1;
-      color: var(--primary);
-      /* --- NEW: Fill active icon --- */
-      fill: #eef2ff;
-    }
-
-    .fs-fine {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 28px 20px 12px 20px;
-      color: var(--text-secondary);
-      opacity: 0.5;
-      margin: 0;
-    }
-
-    .left-sidebar--sticky-container {
-      padding-top: 20px;
+        background: transparent;
+        box-shadow: none;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     .fs-headline1 {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.5px;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.5px;
     }
 
     .s-btn__primary {
-      background: var(--primary) !important;
-      color: white !important;
-      border: none !important;
-      padding: 10px 16px !important; /* Adjusted padding for icon */
-      border-radius: 8px !important;
-      font-weight: 500 !important;
-      font-size: 15px !important;
-      transition: all 0.2s !important;
-      box-shadow: none !important;
-      /* --- NEW: For icon alignment --- */
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+        background: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 10px 16px !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+        transition: all 0.2s !important;
+        box-shadow: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .s-btn__primary svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.5;
+        width: 16px;
+        height: 16px;
+        stroke-width: 2.5;
     }
 
     .s-btn__primary:hover {
-      background: var(--primary-dark) !important;
-      transform: translateY(-1px);
+        background: var(--primary-dark) !important;
+        transform: translateY(-1px);
     }
     
-    /* --- START: NEW FILTER TAB STYLES --- */
     .filter-nav {
-      border-bottom: 2px solid var(--border);
-      margin-top: 24px;
-      margin-bottom: 24px;
+        border-bottom: 2px solid var(--border);
+        margin-top: 24px;
+        margin-bottom: 24px;
     }
+
     .filter-nav ul {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      gap: 16px;
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 16px;
     }
+
     .filter-nav li {
-      list-style: none;
+        list-style: none;
     }
+
     .filter-nav a {
-      display: block;
-      padding: 12px 4px;
-      color: var(--text-secondary);
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 3px solid transparent;
-      transform: translateY(2px);
-      transition: all 0.2s;
+        display: block;
+        padding: 12px 4px;
+        color: var(--text-secondary);
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 3px solid transparent;
+        transform: translateY(2px);
+        transition: all 0.2s;
     }
+
     .filter-nav a:hover {
-      color: var(--text-primary);
+        color: var(--text-primary);
     }
+
     .filter-nav a.is-selected {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
+        color: var(--primary);
+        border-bottom-color: var(--primary);
     }
+
     .filter-nav .bounty-indicator-tab {
-      margin-right: 4px;
-      vertical-align: middle;
-      padding: 2px 6px;
-      font-size: 11px;
+        margin-right: 4px;
+        vertical-align: middle;
+        padding: 2px 6px;
+        font-size: 11px;
     }
-    /* --- END: NEW FILTER TAB STYLES --- */
 
     .bounty-indicator-tab {
-      background: #ef4444;
-      color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-right: 6px;
+        background: #ef4444;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 6px;
     }
 
     .question-summary {
-      background: var(--bg-primary) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 12px !important;
-      padding: 24px !important;
-      margin-bottom: 12px !important;
-      transition: all 0.2s ease-out !important;
+        background: var(--bg-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        padding: 24px !important;
+        margin-bottom: 12px !important;
+        transition: all 0.2s ease-out !important;
     }
 
     .question-summary:hover {
-      border-color: var(--primary) !important;
-      /* --- MODIFIED: Stronger shadow and lift effect --- */
-      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
-      transform: translateY(-3px);
+        border-color: var(--primary) !important;
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
+        transform: translateY(-3px);
     }
 
     .question-hyperlink {
-      color: var(--text-primary) !important;
-      font-size: 18px !important;
-      font-weight: 600 !important;
-      text-decoration: none !important;
-      transition: color 0.2s !important;
-      line-height: 1.5 !important;
+        color: var(--text-primary) !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        transition: color 0.2s !important;
+        line-height: 1.5 !important;
     }
 
     .question-hyperlink:hover {
-      color: var(--primary) !important;
+        color: var(--primary) !important;
     }
 
     .votes, .status, .views {
-      padding: 0 !important;
-      text-align: center;
-      min-width: 60px;
-      background: transparent !important;
-      border: none !important;
+        padding: 0 !important;
+        text-align: center;
+        min-width: 60px;
+        background: transparent !important;
+        border: none !important;
     }
 
     .mini-counts {
-      font-size: 20px;
-      /* --- MODIFIED: Bolder stats --- */
-      font-weight: 700;
-      color: var(--text-primary);
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-primary);
     }
 
     .votes .mini-counts { color: var(--primary); }
@@ -266,471 +177,311 @@
     .votes div:last-child,
     .status div:last-child,
     .views div:last-child {
-      font-size: 13px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-top: 2px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-top: 2px;
     }
 
     .post-tag {
-      background: var(--bg-secondary) !important;
-      color: var(--text-secondary) !important;
-      border: 1px solid var(--border) !important;
-      padding: 5px 12px !important;
-      border-radius: 6px !important;
-      font-size: 13px !important;
-      font-weight: 500 !important;
-      transition: all 0.2s !important;
-      text-decoration: none !important;
+        background: var(--bg-secondary) !important;
+        color: var(--text-secondary) !important;
+        border: 1px solid var(--border) !important;
+        padding: 5px 12px !important;
+        border-radius: 6px !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        transition: all 0.2s !important;
+        text-decoration: none !important;
     }
 
     .post-tag:hover {
-      background: var(--primary) !important;
-      color: white !important;
-      border-color: var(--primary) !important;
+        background: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
     }
     
-    /* --- NEW: User info alignment --- */
     .summary .started {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    /* --- NEW: User Avatar Style --- */
     .user-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      flex-shrink: 0; /* Prevents shrinking */
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        flex-shrink: 0;
     }
 
     .started-link {
-      color: var(--text-secondary);
-      font-size: 14px;
-      text-decoration: none;
+        color: var(--text-secondary);
+        font-size: 14px;
+        text-decoration: none;
     }
 
     .started-link:hover {
-      color: var(--primary);
+        color: var(--primary);
     }
 
     .reputation-score {
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-left: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        padding: 3px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-left: 6px;
     }
 
     .s-sidebarwidget {
-      background: var(--bg-primary) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 12px !important;
-      overflow: hidden;
-      margin-bottom: 16px;
+        background: var(--bg-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+        margin-bottom: 16px;
     }
 
     .s-sidebarwidget--header {
-      /* --- MODIFIED: Cleaner sidebar header + icon styles --- */
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-primary) !important;
-      color: var(--text-primary) !important;
-      font-size: 15px !important;
-      font-weight: 700 !important;
-      padding: 16px !important;
-      border-bottom: 1px solid var(--border) !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        padding: 16px !important;
+        border-bottom: 1px solid var(--border) !important;
     }
 
     .s-sidebarwidget--header svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--primary);
-      stroke-width: 2;
-      opacity: 0.8;
-      flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        stroke: var(--primary);
+        stroke-width: 2;
+        opacity: 0.8;
+        flex-shrink: 0;
     }
 
     .s-sidebarwidget--item {
-      padding: 16px !important;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
+        padding: 16px !important;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
     }
 
     .s-sidebarwidget--item:last-child {
-      border-bottom: none;
+        border-bottom: none;
     }
 
     .s-sidebarwidget--item:hover {
-      background: var(--hover);
+        background: var(--hover);
     }
 
     .s-sidebarwidget--item a {
-      color: var(--text-primary);
-      font-size: 14px;
-      text-decoration: none;
-      line-height: 1.5;
-      font-weight: 500;
+        color: var(--text-primary);
+        font-size: 14px;
+        text-decoration: none;
+        line-height: 1.5;
+        font-weight: 500;
     }
 
     .s-sidebarwidget--item a:hover {
-      color: var(--primary) !important;
-      text-decoration: underline !important;
+        color: var(--primary) !important;
+        text-decoration: underline !important;
     }
     
-    /* --- NEW: Hot Topic Count Badge --- */
     .hot-topic-count {
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 14px;
-      background: #eef2ff;
-      padding: 4px 8px;
-      border-radius: 6px;
-      text-align: center;
-      min-width: 32px;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 14px;
+        background: #eef2ff;
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 32px;
     }
 
     .bottom-notice {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--primary);
-      padding: 20px;
-      border-radius: 8px;
-      font-size: 15px;
-      color: var(--text-secondary);
-      margin-top: 24px;
-      line-height: 1.7;
+        background: var(--bg-primary);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--primary);
+        padding: 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        color: var(--text-secondary);
+        margin-top: 24px;
+        line-height: 1.7;
     }
 
     .bottom-notice a {
-      color: var(--primary);
-      font-weight: 500;
-      text-decoration: none;
+        color: var(--primary);
+        font-weight: 500;
+        text-decoration: none;
     }
 
     .bottom-notice a:hover {
-      text-decoration: underline;
-    }
-
-    .site-footer {
-      background: var(--bg-primary);
-      border-top: 1px solid var(--border);
-      margin-top: 48px;
-      padding: 32px 0;
-    }
-
-    .site-footer h5 {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-
-    .site-footer a {
-      color: var(--text-secondary) !important;
-      font-size: 14px;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .site-footer a:hover {
-      color: var(--primary) !important;
-    }
-
-    .site-footer--copyright p {
-      color: var(--text-secondary);
-      font-size: 13px;
-    }
-
-    .svg-icon {
-      opacity: 0.6;
+        text-decoration: underline;
     }
 
     #mainbar {
-      padding: 24px;
+        padding: 24px;
     }
 
     #sidebar {
-      padding: 24px 24px 24px 12px;
+        padding: 24px 24px 24px 12px;
     }
+</style>
 
-    .d-flex.ai-center.mb16 {
-      /* This class is no longer used for tabs */
-      /* margin-top: 24px; */
-      /* margin-bottom: 24px; */
-    }
-  </style>
-</head>
+<div id="content" class="snippet-hidden">
 
-<body class="home-page unified-theme">
-  <div id="notify-container"></div>
-  <div id="custom-header"></div>
+    <div id="mainbar">
 
-  <div class="container">
-
-    <div id="left-sidebar" data-is-here-when="md lg" class="left-sidebar js-pinned-left-sidebar ps-relative">
-      <div class="left-sidebar--sticky-container js-sticky-leftnav">
-        <nav role="navigation">
-          <ol class="nav-links">
-            <li class="youarehere">
-              <a href="/" class="nav-links--link">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span>Home</span>
-              </a>
-            </li>
-            
-            <li class="fs-fine">Community</li>
-
-            <li>
-              <a id="nav-questions" href="{% url 'qa:questions' %}" class="nav-links--link">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 16v-4"></path>
-                  <path d="M12 8h.01"></path>
-                </svg>
-                <span>Discussions</span>
-              </a>
-            </li>
-
-            <li>
-              <a id="nav-tags" href="{% url 'profile:tagsPage' %}" class="nav-links--link">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                  <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                </svg>
-                <span>Topics</span>
-              </a>
-            </li>
-
-            <li>
-              <a id="nav-users" href="{% url 'profile:usersPage' %}" class="nav-links--link">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-                <span>Students</span>
-              </a>
-            </li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-
-    <div id="content" class="snippet-hidden">
-
-      <div id="mainbar">
-
-        <div class="d-flex ai-center"> <h1 class="flex--item fl1 fs-headline1">Trending Discussions</h1>
-          <div class="ml12 aside-cta flex--item print:d-none">
-            <a href="{% url 'qa:new_question' %}" class="ws-nowrap s-btn s-btn__primary">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              Start Discussion
-            </a>
-          </div>
+        <div class="d-flex ai-center">
+            <h1 class="flex--item fl1 fs-headline1">Trending Discussions</h1>
+            <div class="ml12 aside-cta flex--item print:d-none">
+                <a href="{% url 'qa:new_question' %}" class="ws-nowrap s-btn s-btn__primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Start Discussion
+                </a>
+            </div>
         </div>
 
         <nav class="filter-nav">
-          <ul>
-            <li><a class="is-selected" href="#">For You</a></li>
-            <li><a href="{% url 'profile:bountied_home' %}" data-value="bounties"><span class="bounty-indicator-tab">{{count_bounty}}</span>Bountied</a></li>
-            <li><a href="{% url 'profile:hot_q_day_home' %}">Today</a></li>
-            <li><a href="{% url 'profile:hot_q_week_home' %}">Week</a></li>
-            <li><a href="{% url 'profile:hot_q_month_home' %}">Month</a></li>
-          </ul>
+            <ul>
+                <li><a class="is-selected" href="#">For You</a></li>
+                <li><a href="{% url 'profile:bountied_home' %}" data-value="bounties"><span class="bounty-indicator-tab">{{count_bounty}}</span>Bountied</a></li>
+                <li><a href="{% url 'profile:hot_q_day_home' %}">Today</a></li>
+                <li><a href="{% url 'profile:hot_q_week_home' %}">Week</a></li>
+                <li><a href="{% url 'profile:hot_q_month_home' %}">Month</a></li>
+            </ul>
         </nav>
 
         <div id="qlist-wrapper" class="flush-left">
-          {% for question in questionsHome %}
-          <div id="question-mini-list">
-            <div>
-              <div class="question-summary narrow" id="question-summary-{{question.id}}">
-                <div onclick="window.location.href='{{question.get_absolute_url}}'" class="cp">
-                  <div class="votes">
-                    <div class="mini-counts"><span title="{{question.calculate_UpVote_DownVote}} votes">{{question.calculate_UpVote_DownVote}}</span></div>
-                    <div>votes</div>
-                  </div>
+            {% for question in questionsHome %}
+            <div id="question-mini-list">
+                <div>
+                    <div class="question-summary narrow" id="question-summary-{{question.id}}">
+                        <div onclick="window.location.href='{{question.get_absolute_url}}'" class="cp">
+                            <div class="votes">
+                                <div class="mini-counts"><span title="{{question.calculate_UpVote_DownVote}} votes">{{question.calculate_UpVote_DownVote}}</span></div>
+                                <div>votes</div>
+                            </div>
 
-                  <div class="status unanswered">
-                    <div class="mini-counts"><span title="{{question.count_answers}} responses">{{question.count_answers}}</span></div>
-                    <div>replies</div>
-                  </div>
+                            <div class="status unanswered">
+                                <div class="mini-counts"><span title="{{question.count_answers}} responses">{{question.count_answers}}</span></div>
+                                <div>replies</div>
+                            </div>
 
-                  <div class="views">
-                    <div class="mini-counts"><span title="{{question.calculate_viewers}} views">{{question.calculate_viewers}}</span></div>
-                    <div>views</div>
-                  </div>
-                </div>
+                            <div class="views">
+                                <div class="mini-counts"><span title="{{question.calculate_viewers}} views">{{question.calculate_viewers}}</span></div>
+                                <div>views</div>
+                            </div>
+                        </div>
 
-                <div class="summary">
-                  <h3><a href="{{question.get_absolute_url}}" class="question-hyperlink">{{question.title}}</a></h3>
-                  <div class="tags d-flex gs4 fw-wrap mt2 float-none lh-unset">
+                        <div class="summary">
+                            <h3><a href="{{question.get_absolute_url}}" class="question-hyperlink">{{question.title}}</a></h3>
+                            <div class="tags d-flex gs4 fw-wrap mt2 float-none lh-unset">
 
-                    {% for tag in question.tags.all %}
-                    <a href="{% url 'tagbadge:taggedItemsFrom_All' tag.id %}" class="post-tag flex--item" rel="tag">{{tag}}</a>
-                    {% endfor %}
+                                {% for tag in question.tags.all %}
+                                <a href="{% url 'tagbadge:taggedItemsFrom_All' tag.id %}" class="post-tag flex--item" rel="tag">{{tag}}</a>
+                                {% endfor %}
 
-                    <div class="flex--item started ml-auto mt0 as-center d-flex ai-center">
-                      <div class="user-avatar">{{ question.post_owner.username|first|upper }}</div>
-                      by <a href="#" style="color: var(--text-primary); font-weight: 500;">{{question.post_owner}}</a>
-                      <span class="reputation-score" dir="ltr">{{question.post_owner|calculate_reputation}}</span>
-                      <a href="{{question.get_absolute_url}}" class="started-link" style="margin-left: 8px;">
-                        <span class="relativetime">{{question.date|naturaltime}}</span>
-                      </a>
+                                <div class="flex--item started ml-auto mt0 as-center d-flex ai-center">
+                                    <div class="user-avatar">{{ question.post_owner.username|first|upper }}</div>
+                                    by <a href="#" style="color: var(--text-primary); font-weight: 500;">{{question.post_owner}}</a>
+                                    <span class="reputation-score" dir="ltr">{{question.post_owner|calculate_reputation}}</span>
+                                    <a href="{{question.get_absolute_url}}" class="started-link" style="margin-left: 8px;">
+                                        <span class="relativetime">{{question.date|naturaltime}}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                  </div>
                 </div>
-
-              </div>
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
         </div>
 
         <br class="cbt"/>
         <h2 class="bottom-notice" data-loc="2">
-          Looking for more? Browse the <a href="{% url 'qa:questions' %}">complete list of discussions</a>, 
-          or explore <a href="{% url 'profile:tagsPage' %}">popular topics</a>. 
-          Help fellow students by answering <a href="/unanswered">unanswered questions</a>.
+            Looking for more? Browse the <a href="{% url 'qa:questions' %}">complete list of discussions</a>, 
+            or explore <a href="{% url 'profile:tagsPage' %}">popular topics</a>. 
+            Help fellow students by answering <a href="/unanswered">unanswered questions</a>.
         </h2>
 
-      </div>
+    </div>
 
-      <div id="sidebar">
+    <div id="sidebar">
 
         <div class="s-sidebarwidget s-anchors mb16">
-          <div class="s-sidebarwidget--header">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 20L14 15M14 15L20 9 20 4 4 4 4 9 10 15 10 20 14 15Z"/>
-              <line x1="4" y1="4" x2="10" y2="10"/>
-              <line x1="14" y1="10" x2="20" y2="4"/>
-            </svg>
-            Campus Updates
-          </div>
-          <ul class="d-block p0 m0">
-            <li class="s-sidebarwidget--item d-flex">
-              <div class="flex--item wmn0 ow-break-word">
-                <a href="#">Study tips for final exam preparation</a>
-              </div>
-            </li>
-            <li class="s-sidebarwidget--item d-flex">
-              <div class="flex--item wmn0 ow-break-word">
-                <a href="#">Best practices for group projects</a>
-              </div>
-            </li>
-          </ul>
+            <div class="s-sidebarwidget--header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 20L14 15M14 15L20 9 20 4 4 4 4 9 10 15 10 20 14 15Z"/>
+                    <line x1="4" y1="4" x2="10" y2="10"/>
+                    <line x1="14" y1="10" x2="20" y2="4"/>
+                </svg>
+                Campus Updates
+            </div>
+            <ul class="d-block p0 m0">
+                <li class="s-sidebarwidget--item d-flex">
+                    <div class="flex--item wmn0 ow-break-word">
+                        <a href="#">Study tips for final exam preparation</a>
+                    </div>
+                </li>
+                <li class="s-sidebarwidget--item d-flex">
+                    <div class="flex--item wmn0 ow-break-word">
+                        <a href="#">Best practices for group projects</a>
+                    </div>
+                </li>
+            </ul>
         </div>
 
         <div class="s-sidebarwidget s-anchors mb16">
-          <div class="s-sidebarwidget--header">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10.2,3.2C10.6,2.8,11,2.7,11.5,2.7C12.6,2.7,13.5,3.6,13.5,4.8C13.5,5.2,13.4,5.6,13.2,6L10.2,3.2z"/>
-              <path d="M13.8,20.8C13.4,21.2,13,21.3,12.5,21.3C11.4,21.3,10.5,20.4,10.5,19.2C10.5,18.8,10.6,18.4,10.8,18L13.8,20.8z"/>
-              <path d="M5.2,5.2C4.8,5.6,4.7,6.1,4.7,6.6C4.7,7.7,5.6,8.6,6.8,8.6C7.2,8.6,7.6,8.5,8,8.2L5.2,5.2z"/>
-              <path d="M18.8,18.8C19.2,18.4,19.3,17.9,19.3,17.4C19.3,16.3,18.4,15.4,17.2,15.4C16.8,15.4,16.4,15.5,16,15.8L18.8,18.8z"/>
-              <path d="M7.6,12.4C7.8,12.2,8,12,8.2,11.8L11.8,8.2C12,8,12.2,7.8,12.4,7.6C12.8,7.2,13,6.7,13,6.2C13,5.1,12.1,4.2,10.9,4.2C10.4,4.2,9.9,4.4,9.5,4.8C9.2,5.2,9,5.7,9,6.2C9,6.5,9.1,6.8,9.2,7.1L6,10.3C5.7,10.2,5.4,10.1,5.1,10.1C4,10.1,3.1,11,3.1,12.2C3.1,13.3,4,14.2,5.1,14.2C5.7,14.2,6.2,14,6.6,13.6C6.8,13.8,7,14,7.2,14.2L10.8,17.8C10.6,18,10.4,18.2,10.2,18.4C9.8,18.8,9.6,19.3,9.6,19.8C9.6,20.9,10.5,21.8,11.7,21.8C12.2,21.8,12.7,21.6,13.1,21.2C13.4,20.8,13.6,20.3,13.6,19.8C13.6,19.5,13.5,19.2,13.4,18.9L16.6,15.7C16.9,15.8,17.2,15.9,17.5,15.9C18.6,15.9,19.5,15,19.5,13.8C19.5,12.7,18.6,11.8,17.5,11.8C16.9,11.8,16.4,12,16,12.4C15.8,12.2,15.6,12,15.4,11.8L11.8,8.2C12,8,12.2,7.8,12.4,7.6"/>
-            </svg>
-            Hot Topics
-          </div>
-          <ul class="d-block p0 m0">
-            <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
-              <div class="hot-topic-count">42</div>
-              <div class="flex--item wmn0 ow-break-word">
-                <a href="#">Time management for students</a>
-              </div>
-            </li>
-            <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
-              <div class="hot-topic-count">38</div>
-              <div class="flex--item wmn0 ow-break-word">
-                <a href="#">Balancing academics and activities</a>
-              </div>
-            </li>
-            <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
-              <div class="hot-topic-count">35</div>
-              <div class="flex--item wmn0 ow-break-word">
-                <a href="#">Programming resources guide</a>
-              </div>
-            </li>
-          </ul>
+            <div class="s-sidebarwidget--header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.2,3.2C10.6,2.8,11,2.7,11.5,2.7C12.6,2.7,13.5,3.6,13.5,4.8C13.5,5.2,13.4,5.6,13.2,6L10.2,3.2z"/>
+                    <path d="M13.8,20.8C13.4,21.2,13,21.3,12.5,21.3C11.4,21.3,10.5,20.4,10.5,19.2C10.5,18.8,10.6,18.4,10.8,18L13.8,20.8z"/>
+                    <path d="M5.2,5.2C4.8,5.6,4.7,6.1,4.7,6.6C4.7,7.7,5.6,8.6,6.8,8.6C7.2,8.6,7.6,8.5,8,8.2L5.2,5.2z"/>
+                    <path d="M18.8,18.8C19.2,18.4,19.3,17.9,19.3,17.4C19.3,16.3,18.4,15.4,17.2,15.4C16.8,15.4,16.4,15.5,16,15.8L18.8,18.8z"/>
+                    <path d="M7.6,12.4C7.8,12.2,8,12,8.2,11.8L11.8,8.2C12,8,12.2,7.8,12.4,7.6C12.8,7.2,13,6.7,13,6.2C13,5.1,12.1,4.2,10.9,4.2C10.4,4.2,9.9,4.4,9.5,4.8C9.2,5.2,9,5.7,9,6.2C9,6.5,9.1,6.8,9.2,7.1L6,10.3C5.7,10.2,5.4,10.1,5.1,10.1C4,10.1,3.1,11,3.1,12.2C3.1,13.3,4,14.2,5.1,14.2C5.7,14.2,6.2,14,6.6,13.6C6.8,13.8,7,14,7.2,14.2L10.8,17.8C10.6,18,10.4,18.2,10.2,18.4C9.8,18.8,9.6,19.3,9.6,19.8C9.6,20.9,10.5,21.8,11.7,21.8C12.2,21.8,12.7,21.6,13.1,21.2C13.4,20.8,13.6,20.3,13.6,19.8C13.6,19.5,13.5,19.2,13.4,18.9L16.6,15.7C16.9,15.8,17.2,15.9,17.5,15.9C18.6,15.9,19.5,15,19.5,13.8C19.5,12.7,18.6,11.8,17.5,11.8C16.9,11.8,16.4,12,16,12.4C15.8,12.2,15.6,12,15.4,11.8L11.8,8.2C12,8,12.2,7.8,12.4,7.6"/>
+                </svg>
+                Hot Topics
+            </div>
+            <ul class="d-block p0 m0">
+                <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
+                    <div class="hot-topic-count">42</div>
+                    <div class="flex--item wmn0 ow-break-word">
+                        <a href="#">Time management for students</a>
+                    </div>
+                </li>
+                <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
+                    <div class="hot-topic-count">38</div>
+                    <div class="flex--item wmn0 ow-break-word">
+                        <a href="#">Balancing academics and activities</a>
+                    </div>
+                </li>
+                <li class="s-sidebarwidget--item d-flex ai-center" style="gap: 12px;">
+                    <div class="hot-topic-count">35</div>
+                    <div class="flex--item wmn0 ow-break-word">
+                        <a href="#">Programming resources guide</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-
-      </div>
 
     </div>
-  </div>
 
-  <footer id="footer" class="site-footer js-footer" role="contentinfo">
-    <div class="site-footer--container">
-      <div class="site-footer--logo">
-        <i class="fab fa-stack-overflow fa-3x"></i>
-      </div>
-      <nav class="site-footer--nav">
-        <div class="site-footer--col site-footer--col__visible js-footer-col">
-          <h5 class="-title"><a href="">Campus Forum</a></h5>
-          <ul class="-list js-primary-footer-links">
-            <li class="-item"><a href="/questions" class="-link">Discussions</a></li>
-            <li class="-item"><a href="" class="-link">Study Groups</a></li>
-            <li class="-item"><a href="" class="-link">Events</a></li>
-            <li class="-item"><a href="" class="-link">Help</a></li>
-          </ul>
-        </div>
-        <div class="site-footer--col site-footer--col__visible js-footer-col">
-          <h5 class="-title"><a href="">Services</a></h5>
-          <ul class="-list">
-            <li class="-item"><a href="" class="-link">Tutoring</a></li>
-            <li class="-item"><a href="" class="-link">Career Guidance</a></li>
-            <li class="-item"><a href="" class="-link">Mentorship</a></li>
-            <li class="-item"><a href="" class="-link">Clubs</a></li>
-          </ul>
-        </div>
-        <div class="site-footer--col site-footer--col__visible js-footer-col">
-          <h5 class="-title"><a href="">About</a></h5>
-          <ul class="-list">
-            <li class="-item"><a class="-link" href="">About Us</a></li>
-            <li class="-item"><a class="-link" href="">Contact</a></li>
-            <li class="-item"><a class="-link" href="">Guidelines</a></li>
-            <li class="-item"><a class="-link" href="">Privacy</a></li>
-          </ul>
-        </div>
-      </nav>
-      <div class="site-footer--copyright fs-fine">
-        <ul class="-list">
-          <li class="-item"><a class="-link" href="">Blog</a></li>
-          <li class="-item"><a href="" class="-link">Twitter</a></li>
-          <li class="-item"><a href="" class="-link">LinkedIn</a></li>
-        </ul>
-
-        <p class="mt-auto mb24">
-          © 2025 Campus Forum · Made by students, for students
-        </p>
-      </div>
-    </div>
-  </footer>
-
-  <div id="onetrust-consent-sdk" class="d-none"></div>
-  <div id="onetrust-banner-sdk" data-controller="s-modal"></div>
-  <div id="ot-pc-content" class="d-none"></div>
-  <div id="onetrust-style" class="d-none">&nbsp;</div>
-  <div class="d-none js-consent-banner-version" data-consent-banner-version="baseline"></div>
-
-</body>
-</html>
+</div>
 
 {% endblock content %}
