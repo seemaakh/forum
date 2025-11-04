@@ -9,8 +9,8 @@ class InlineTagEditForm(forms.ModelForm):
 		fields = ['tags']
 
 class SearchForm(forms.Form):
-	noAnswers = forms.BooleanField(initial=False)
-
+    q = forms.CharField(label='Search', required=False)
+    noAnswers = forms.BooleanField(initial=False, required=False)
 class BanUser_Form(forms.ModelForm):
 
 	class Meta:

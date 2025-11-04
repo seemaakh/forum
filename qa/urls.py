@@ -106,7 +106,8 @@ urlpatterns = [
 
 	path('load_answer_upvotes_downvotes/<int:answer_id>/', views.load_answer_upvotes_downvotes, name='load_answer_upvotes_downvotes'),
 
-
+	path('search/', views.search_questions, name='search_questions'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

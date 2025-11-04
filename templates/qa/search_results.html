@@ -1,0 +1,149 @@
+{% extends "profile/base.html" %}
+{% block content %}
+<style>
+  .search-container {
+    max-width: 630px;
+    margin: 2.7rem auto 1rem auto;
+    padding: 0 1rem;
+  }
+  .search-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.2rem;
+  }
+  .search-header svg {
+    width: 2.1rem;
+    height: 2.1rem;
+    margin-right: 0.6rem;
+    color: #0074cc;
+  }
+  .search-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #22223b;
+    letter-spacing: -0.7px;
+  }
+  .search-box-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.35rem;
+    gap: 0.4rem;
+  }
+  .search-box-form input[type="text"] {
+    flex: 1;
+    font-size: 1.15em;
+    border: 1px solid #e9ecef;
+    border-radius: 7px;
+    padding: 0.7em 1em;
+    margin-right:0.6em;
+    box-shadow: none;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-box-form input[type="text"]:focus {
+    border-color: #0074cc;
+  }
+  .search-box-form button {
+    background-color: #0074cc;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.7em 2em;
+    border-radius: 7px;
+    font-size: 1.07em;
+    border: none;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.08);
+    transition: background .2s;
+    cursor:pointer;
+  }
+  .search-box-form button:hover {
+    background: #0959a8;
+  }
+  .result-card {
+    padding: 1.3rem 1.2rem 1rem 1.2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    background: #fff;
+    box-shadow: 0 1px 7px 0 rgba(0,0,0,.05);
+    transition: box-shadow .18s;
+  }
+  .result-card:hover {
+    box-shadow: 0 2px 18px 0 rgba(0,0,0,.08);
+  }
+  .result-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    color: #155fa0;
+    text-decoration: none;
+    transition: color .18s;
+  }
+  .result-title:hover {
+    color: #0074cc;
+    text-decoration: underline;
+  }
+  .result-body {
+    color: #2d2d2d;
+    font-size: 1.06em;
+    margin-bottom: 0.55rem;
+    margin-top:0.15rem;
+    word-break: break-word;
+  }
+  .answer-highlight {
+    background: linear-gradient(to right,#e6f7ff,#dbedfa 85%);
+    border-radius: 9px;
+    padding: 0.65em 1em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+    font-size: 1.01em;
+    color: #084a70;
+    font-weight: 500;
+    border-left: 4px solid #0074cc;
+  }
+  .no-answer {
+    color: #888;
+    margin-top: 0.6em;
+    font-size: 1em;
+  }
+  .no-results {
+    color: #c20022;
+    font-size: 1.18em;
+    margin-top:2.5em;
+    text-align:center;
+    background:#ffe6eb;
+    border-radius:7px;
+    padding:1em;
+    letter-spacing:.3px;
+  }
+</style>
+<div class="search-container">
+  <div class="search-header">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="search-title">Search</span>
+  </div>
+  <form method="get" action="{% url 'qa:search_questions' %}" class="search-box-form">
+      <input type="text" name="q" value="{{ query }}" autocomplete="off" placeholder="eg. python decorators, how to get internship, hostel wifi..." />
+      <button type="submit">Search</button>
+  </form>
+  {% if results and query %}
+    {% for question in results %}
+      <div class="result-card">
+        <a href="{{ question.get_absolute_url }}" class="result-title">{{ question.title }}</a>
+        <div class="result-body">{{ question.body|truncatewords_html:30|safe }}</div>
+        {% with answers=question.answer_set.all %}
+          {% if answers %}
+            <div class="answer-highlight">
+              <strong>Top Answer:</strong>
+              {{ answers.0.body|truncatewords_html:25|safe }}
+            </div>
+          {% else %}
+            <div class="no-answer">No answers yet.</div>
+          {% endif %}
+        {% endwith %}
+      </div>
+    {% endfor %}
+  {% elif query %}
+    <div class="no-results">No results found for "<b>{{ query }}</b>"</div>
+  {% endif %}
+</div>
+{% endblock %}

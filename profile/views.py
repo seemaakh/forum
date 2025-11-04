@@ -98,6 +98,7 @@ def Ajax_searchUser(request):
 #     return render(request, 'qa/tags.html', context)
 
 
+
 def searchTagFromQuery(request):
 
     query = request.GET.get('tagQuery')

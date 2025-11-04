@@ -83,5 +83,6 @@ urlpatterns = [
 	path('hot_q_week_home/', views.hot_q_week_home, name='hot_q_week_home'),
 
 	path('hot_q_month_home/', views.hot_q_month_home, name='hot_q_month_home'),
+    
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

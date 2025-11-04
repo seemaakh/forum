@@ -5372,3 +5372,27 @@ def questions(request):
     }
 
     return render(request, 'qa/Questions_List.html', context)
+
+
+from .forms import SearchForm
+
+def search_questions(request):
+    query = request.GET.get("q", "")
+    results = Question.objects.none()
+    if query:
+        # Search questions by title and body
+        question_matches = Question.objects.filter(
+            Q(title__icontains=query) |
+            Q(body__icontains=query)
+        )
+        # Search answers, get matching question IDs
+        answer_qs = Answer.objects.filter(body__icontains=query)
+        answer_question_ids = answer_qs.values_list('questionans_id', flat=True)
+        # Merge all matched questions (avoid distinct/| error)
+        results = Question.objects.filter(
+            Q(id__in=answer_question_ids) |
+            Q(id__in=question_matches.values_list('id', flat=True))
+        )
+    return render(request, "qa/search_results.html", {"query": query, "results": results})
+
+
