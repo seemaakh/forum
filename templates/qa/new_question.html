@@ -165,15 +165,16 @@
             $('.error_message_of_tag').html(`<h6>Add Atleast One Tag</h6>`).show();
             $('.error_message_of_new_tag').hide();
           } else if (data.showNewTagError) {
-            $('.error_message_of_new_tag').html(`<h6>You need atleast 1500 Reputation to create a New Tag</h6>`).show();
-            $('.error_message_of_tag').hide();
-          } else if(data.define) {
-            $('.error_message_of_new_tag').html(`<h6>You need atleast 1500 Reputation to create a New Tag</h6>`).hide();
-            $('.error_message_of_tag').hide();
-          } else {
-            $('.error_message_of_new_tag').html(`<h6>You need atleast 1500 Reputation to create a New Tag</h6>`).hide();
-            $('.error_message_of_tag').hide();
-          }
+  $('.error_message_of_new_tag').html(``).hide();
+  $('.error_message_of_tag').hide();
+} else if(data.define) {
+  $('.error_message_of_new_tag').html(``).hide();
+  $('.error_message_of_tag').hide();
+} else {
+  $('.error_message_of_new_tag').html(``).hide();
+  $('.error_message_of_tag').hide();
+}
+
 
           if (data.allClear) {
             $("#subBut").prop('disabled', false);

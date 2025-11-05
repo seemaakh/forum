@@ -294,207 +294,33 @@ def undelete_answer(request, answer_id):
         messages.error(request, 'You are not post owner')
         return redirect('qa:questionDetailView', pk=answer.questionans.id)
 
-
 def rewardPrivielege(request, which_user):
-    """
-    This view will reward privilege to user when called
-    within a view with "user" argument to award
-    """
-    getAlltheReputation = Reputation.objects.filter(
-        awarded_to=which_user).aggregate(
-        Sum('answer_rep_C'), Sum('question_rep_C'))
-    Q_rep = getAlltheReputation['question_rep_C__sum']
-    final_Q_Rep = getAlltheReputation['question_rep_C__sum'] if Q_rep else 0
-    A_rep = getAlltheReputation['answer_rep_C__sum']
-    final_A_Rep = getAlltheReputation['answer_rep_C__sum'] if A_rep else 0
-    totalReputation = final_Q_Rep + final_A_Rep
-
-    # If user's reputation is more than 10 then Award Create Wiki Posts privilege.
-    if totalReputation >= 10:
-        # Create Wiki Posts - DONE
-        which_user.profile.create_wiki_posts = True
-        # Answer Protect Questions - DONE
-        which_user.profile.remove_new_user_restrictions = True
-        which_user.profile.save()
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Create Wiki Posts",
-            type_of_PrivNotify="Privilege_Earned")
-    else:
-        # Create Wiki Posts - DONE
-        which_user.profile.create_wiki_posts = False
-        # Answer Protect Questions - DONE
-        which_user.profile.remove_new_user_restrictions = False
-        which_user.profile.save()
-
-    # If user's reputation is more than 15 then Award Vote Up privilege.
-    if totalReputation >= 15:
-        which_user.profile.voteUpPriv = True
-        which_user.profile.flag_posts = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Up Vote",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.voteUpPriv = False
-        which_user.profile.flag_posts = False
-        which_user.profile.save()
-
-    # If user's reputation is more than 15 then Award Comment Everywhere privilege.
-    if totalReputation >= 50:
-        # Comment EveryWhere - DONE
-        which_user.profile.comment_everywhere_Priv = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Comment Everywhere",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        # Comment EveryWhere - DONE
-        which_user.profile.comment_everywhere_Priv = False
-        which_user.profile.save()
-
-    if totalReputation >= 75:
-        # Set Bounties - DONE
-        which_user.profile.set_bounties = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Set Bounties",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        # Set Bounties - DONE
-        which_user.profile.set_bounties = False
-        which_user.profile.save()
-
-    if totalReputation >= 125:
-        # Vote Down - DONE
-        which_user.profile.voteDownPriv = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Vote Down",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        # Vote Down - DONE
-        which_user.profile.voteDownPriv = False
-        which_user.profile.save()
-
-    if totalReputation >= 250:
-        which_user.profile.view_close_votes_Priv = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="View Close Votes",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.view_close_votes_Priv = False
-        which_user.profile.save()
-
-    if totalReputation >= 500:
-        which_user.profile.access_review_queues = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Access Review Queues",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.access_review_queues = False
-        which_user.profile.save()
-
-    if totalReputation >= 1000:
-        which_user.profile.established_user_Priv = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Established User",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.established_user_Priv = False
-        which_user.profile.save()
-
-    if totalReputation >= 1500:
-        which_user.profile.create_tags = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Create Tags",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.create_tags = False
-        which_user.profile.save()
-
-    if totalReputation >= 2000:
-        which_user.profile.edit_questions_answers = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Edit Question and Answers",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.edit_questions_answers = False
-        which_user.profile.save()
-
-    if totalReputation >= 10000:
-        which_user.profile.accessTo_moderatorTools = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Access to Moderator Tools",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.accessTo_moderatorTools = False
-        which_user.profile.save()
-
-    if totalReputation >= 15000:
-        which_user.profile.protect_questions = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Protect Questions",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.protect_questions = False
-        which_user.profile.save()
-
-    if totalReputation >= 20000:
-        which_user.profile.trusted_user_Priv = True
-        PrivRepNotification.objects.get_or_create(
-            for_user=which_user,
-            privilegeURL="#",
-            for_if="Trusted User",
-            type_of_PrivNotify="Privilege_Earned"
-        )
-        which_user.profile.save()
-    else:
-        which_user.profile.trusted_user_Priv = False
-        which_user.profile.save()
-
+    # Grant ALL privileges regardless of reputation
+    which_user.profile.create_wiki_posts = True
+    which_user.profile.remove_new_user_restrictions = True
+    which_user.profile.voteUpPriv = True
+    which_user.profile.flag_posts = True
+    which_user.profile.comment_everywhere_Priv = True
+    which_user.profile.set_bounties = True
+    which_user.profile.voteDownPriv = True
+    which_user.profile.view_close_votes_Priv = True
+    which_user.profile.access_review_queues = True
+    which_user.profile.established_user_Priv = True
+    which_user.profile.create_tags = True
+    which_user.profile.edit_questions_answers = True
+    which_user.profile.accessTo_moderatorTools = True
+    which_user.profile.protect_questions = True
+    which_user.profile.trusted_user_Priv = True
+    which_user.profile.save()
+    # Notify about all privileges earned (optional)
+    PrivRepNotification.objects.get_or_create(
+        for_user=which_user,
+        privilegeURL="#",
+        for_if="All Privileges Granted",
+        type_of_PrivNotify="Privilege_Earned"
+    )
     return HttpResponse(status=202)
+
 
 
 def save_comment(request, question_id):
@@ -2556,178 +2382,45 @@ def new_question(request):
     AllTags = Tag.objects.all().values_list('name', flat=True)
     last_posted_q = Question.objects.filter(post_owner=request.user).last()
     is_olderThan_nintyMinutes = timezone.now() - timedelta(minutes=90)
-
+    
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
-            if last_posted_q is None:
-                formTags = form.cleaned_data['tags']
-                gettingBody = form.cleaned_data['body']
-                gettingTitle = form.cleaned_data['title']
-                new_post = form.save(commit=False)
-                new_post.post_owner = request.user
+            formTags = form.cleaned_data['tags']
+            gettingBody = form.cleaned_data['body']
+            gettingTitle = form.cleaned_data['title']
+            new_post = form.save(commit=False)
+            new_post.post_owner = request.user
+            # (Tag existence check, or skip entirely for truly "free" tagging)
+            for typedTags in formTags:
+                # Check if tag exists, or allow creation (for student forum, allow all tags)
+                pass
 
-                for typedTags in formTags:
-
-                    check_if_everything_is_fine = all(
-                        typedTags in AllTags for typedTags in formTags)
-
-                    if request.user.profile.create_tags:
-                        if len(gettingBody) >= 0 and len(gettingBody) <= 29:
-                            messages.error(
-                                request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                        elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                            messages.error(
-                                request, "Title must be at least 15 characters.")
-                        else:
-                            print(form.errors)
-                            form.save()
-                            form.save_m2m()
-                            if len(gettingBody) <= 200:
-                                create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                    suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                    review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                            return redirect('qa:questions')
-                    elif check_if_everything_is_fine:
-                        if len(gettingBody) >= 0 and len(gettingBody) <= 29:
-                            messages.error(
-                                request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                        elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                            messages.error(
-                                request, "Title must be at least 15 characters.")
-                        else:
-                            form.save()
-                            print(form.errors)
-                            form.save_m2m()
-                            if len(gettingBody) <= 200:
-                                create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                    suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                    review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                            return redirect('qa:questions')
-
-                    else:
-                        print("Problem 2")
-                        messages.error(
-                            request, f'You need atleast 1500 Reputation to create a New Tag - {formTags}')
-
+            # Text quality checks (keep for forum quality!)
+            if len(gettingBody) >= 0 and len(gettingBody) <= 29:
+                messages.error(
+                    request, "Body Text should at least 30 words. You entered " + str(len(gettingBody)))
+            elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
+                messages.error(
+                    request, "Title must be at least 15 characters.")
             else:
-                if not request.user.profile.remove_new_user_restrictions:
-                    if last_posted_q.date >= is_olderThan_nintyMinutes:
-                        messages.error(
-                            request, 'Question Asking Limit Exceed, You will be able to ask in 90 minutes')
-                    else:
-                        formTags = form.cleaned_data['tags']
-                        gettingBody = form.cleaned_data['body']
-                        gettingTitle = form.cleaned_data['title']
-                        new_post = form.save(commit=False)
-                        new_post.post_owner = request.user
-
-                        for typedTags in formTags:
-
-                            check_if_everything_is_fine = all(
-                                typedTags in AllTags for typedTags in formTags)
-
-                            if request.user.profile.create_tags:
-                                if len(gettingBody) >= 0 and len(
-                                        gettingBody) <= 29:
-                                    messages.error(
-                                        request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                                elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                                    messages.error(
-                                        request, "Title must be at least 15 characters.")
-                                else:
-                                    form.save()
-                                    print(form.errors)
-                                    form.save_m2m()
-                                    if len(gettingBody) <= 200:
-                                        create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                            suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                        createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                            review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                                    return redirect('qa:questions')
-
-                            elif check_if_everything_is_fine:
-                                if len(gettingBody) >= 0 and len(
-                                        gettingBody) <= 29:
-                                    messages.error(
-                                        request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                                elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                                    messages.error(
-                                        request, "Title must be at least 15 characters.")
-                                else:
-                                    form.save()
-                                    print(form.errors)
-                                    form.save_m2m()
-                                    if len(gettingBody) <= 200:
-                                        create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                            suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                        createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                            review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                                    return redirect('qa:questions')
-                            else:
-                                messages.error(
-                                    request, f'You need atleast 1500 Reputation to create a New Tag - {typedTags}')
-                else:
-                    formTags = form.cleaned_data['tags']
-                    gettingBody = form.cleaned_data['body']
-                    gettingTitle = form.cleaned_data['title']
-
-                    new_post = form.save(commit=False)
-                    new_post.post_owner = request.user
-                    for typedTags in formTags:
-
-                        check_if_everything_is_fine = all(
-                            typedTags in AllTags for typedTags in formTags)
-
-                        if request.user.profile.create_tags:
-                            print(len(gettingTitle))
-                            if len(gettingBody) >= 0 and len(
-                                    gettingBody) <= 29:
-                                messages.error(
-                                    request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                            elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                                messages.error(
-                                    request, "Title must be at least 15 characters.")
-                            else:
-                                form.save()
-                                print(form.errors)
-                                form.save_m2m()
-                                if len(gettingBody) <= 200:
-                                    create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                        suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                    createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                        review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                                return redirect('qa:questions')
-                        elif check_if_everything_is_fine:
-                            print(len(gettingBody))
-                            if len(gettingBody) >= 0 and len(
-                                    gettingBody) <= 29:
-                                messages.error(
-                                    request, "Body Text should atleast 30 words. You entered " + str(len(gettingBody)))
-                            elif len(gettingTitle) >= 0 and len(gettingTitle) <= 14:
-                                messages.error(
-                                    request, "Title must be at least 15 characters.")
-                            else:
-                                # counting >= 0 and counting <= 29
-                                print(form.errors)
-                                form.save()
-                                form.save_m2m()
-                                if len(gettingBody) <= 200:
-                                    create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
-                                        suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False)
-                                    createReview_item = ReviewLowQualityPosts.objects.get_or_create(
-                                        review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False)
-                                return redirect('qa:questions')
-                        else:
-                            messages.error(
-                                request, f'You need atleast 1500 Reputation to create a New Tag - {typedTags}')
+                new_post.save()
+                form.save_m2m()
+                if len(gettingBody) <= 200:
+                    create_Low_Quality_Post_Instance, cre = LowQualityPostsCheck.objects.get_or_create(
+                        suggested_through="Automatic", low_is=new_post, why_low_quality="Question_Less_Than_200", is_completed=False
+                    )
+                    createReview_item = ReviewLowQualityPosts.objects.get_or_create(
+                        review_of=create_Low_Quality_Post_Instance, is_question=new_post, is_reviewed=False
+                    )
+                return redirect('qa:questions')
     else:
         form = QuestionForm()
 
     context = {'form': form}
     return render(request, 'qa/new_question.html', context)
+
+
 
 
 def validateQuestionTitle(request):
@@ -2744,6 +2437,7 @@ def validateQuestionTitle(request):
     return JsonResponse(data)
 
 
+
 def reviewQuestion(request):
     AllTags = Tag.objects.all().values_list('name', flat=True)
     post_title = request.GET.get('title', None)
@@ -2751,72 +2445,42 @@ def reviewQuestion(request):
     formTags = request.GET.get('tags', None)
     taken = Question.objects.filter(title__iexact=post_title).exists()
     formTags = formTags.split(",")
-    print(formTags)
+    showError = False
+    showNewTagError = False
+    define = True
+
+    # For student forum: do NOT restrict tag creation by user privilege or rep
     for typedTags in formTags:
-        check_if_everything_is_fine = all(
-            typedTags in AllTags for typedTags in formTags)
-        define = ''
-        showNewTagError = False
-        if request.user.profile.create_tags:
-            print("No Restrictions")
-        else:
-            if not check_if_everything_is_fine:
-                showNewTagError = True
-            else:
-                showNewTagError = False
-                define = True
-    # print(check_if_everything_is_fine)
+        # If you want: only block blank tags, allow everything else
+        if typedTags.strip() == '':
+            showError = True
+            define = False
 
     counting = len(post_body)
     if counting >= 0 and counting <= 29:
         postBody = True
-        print("Body Text should atleast 30 words. You entered " + str(counting))
-        # USED "str(counting)" BECAUSE WITHOUT ADDING str, It would show 'TypeError' :-:
-        # print("Body Text should atleast 30 words. You entered " + int(counting))
-        # TypeError: can only concatenate str (not "int") to str
     else:
         postBody = False
-        print("Body Text is FulFilled")
 
-    # using list comprehension to
-    # perform removal
     new = [i for i in formTags if i]
 
-    # spliting = formTags.split(",")
-    # print(len(spliting))
-    # lengthing = len(spliting)
-    # print(lengthing)
-    # for words in spliting:
-    #     print(count(words))
-
     if len(new) < 1:
-        print("Fine")
         showError = True
     else:
-        print("Raise the Error")
         showError = False
 
     if len(post_title) <= 5:
-        print("Add atleast 2 more Words")
         showLessTitleError = True
     else:
         showLessTitleError = False
-    # print(showLessTitleError)
-    # if taken == True:
-    #     is_it_true = True
-    # else:
-    #     is_it_true = False
 
     if taken == False and showError == False and showNewTagError == False and showLessTitleError == False and postBody == False:
         allClear = True
-        print("Everything Clear")
     else:
         allClear = False
-        print("Something is Missing")
 
     data = {
         'taken': taken,
-        # 'postBody':postBody,
         'showError': showError,
         'allClear': allClear,
         'showNewTagError': showNewTagError,
@@ -2831,7 +2495,9 @@ def reviewQuestion(request):
         data['error_message_of_tag'] = f'Add atleast One Tag'
     elif data['showNewTagError']:
         data['error_message_of_new_tag'] = f'Cannot create a New Tag'
+
     return JsonResponse(data)
+
 
 
 def bookmarkIt(request, question_id):
